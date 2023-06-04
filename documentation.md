@@ -61,7 +61,7 @@ export AWS_SECRET_ACCESS_KEY=
 
 ## Create a new Terraform configuration file
 - create a folder named: `terraform-ansible`
-- in `terraform-ansible` create a new file `main.tf` and add the following:
+- in `terraform-ansible` create a new file `main.tf` and add the following to create 3 instances:
 
 ```
 
