@@ -66,100 +66,19 @@ export AWS_SECRET_ACCESS_KEY=
 ```
 
 provider "aws" {
-  region = local.region
+  region = var.aws_region
 }
 
-data "aws_availability_zones" "available" {}
-
-locals {
-  name   = "ex-${basename(path.cwd)}"
-  region = "eu-west-2"
-
-  vpc_cidr = "10.0.0.0/16"
-  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+resource "aws_instance" "ec2_instances" {
+  count         = var.instance_count
+  ami           = "ami-0a6006bac3b9bb8d3"
+  instance_type = var.instance_type
 
   tags = {
-    Name       = local.name
-    Example    = local.name
-    Repository = "https://github.com/terraform-aws-modules/terraform-aws-ec2-instance"
+    Name = "EC2 Instance ${count.index}"
   }
 }
 
-################################################################################
-# EC2 Module
-################################################################################
-
-module "ec2" {
-  source = "../../"
-
-  for_each = toset(["one", "two", "three"])
-  name = "instance-${each.key}"
-
-  ami                         = data.aws_ami.amazon_linux.id
-  instance_type               = "t2.micro"
-  availability_zone           = element(local.azs, 0)
-  subnet_id                   = element(module.vpc.private_subnets, 0)
-  vpc_security_group_ids      = [module.security_group.security_group_id]
-  associate_public_ip_address = true
-
-  tags = local.tags
-}
-
-resource "aws_volume_attachment" "this" {
-  device_name = "/dev/sdh"
-  volume_id   = aws_ebs_volume.this.id
-  instance_id = module.ec2.id
-}
-
-resource "aws_ebs_volume" "this" {
-  availability_zone = element(local.azs, 0)
-  size              = 1
-
-  tags = local.tags
-}
-
-################################################################################
-# Supporting Resources
-################################################################################
-
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 4.0"
-
-  name = local.name
-  cidr = local.vpc_cidr
-
-  azs             = local.azs
-  private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
-  public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
-
-  tags = local.tags
-}
-
-data "aws_ami" "amazon_linux" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["amzn-ami-hvm-*-x86_64-gp2"]
-  }
-}
-
-module "security_group" {
-  source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4.0"
-
-  name        = local.name
-  description = "Security group for example usage with EC2 instance"
-  vpc_id      = module.vpc.vpc_id
-
-  ingress_cidr_blocks = ["0.0.0.0/0"]
-  ingress_rules       = ["http-80-tcp", "all-icmp"]
-  egress_rules        = ["all-all"]
-
-  tags = local.tags
-}
 
 
 ```
@@ -168,56 +87,27 @@ module "security_group" {
 
 <br>
 
-## Create An `outputs` file
-- create a file named `outputs.tf` and add the following:
+## Create A `variables` file
+- create a file named `variables.tf` and add the following:
 
 ```
 
-# EC2
-output "ec2_id" {
-  description = "The ID of the instance"
-  value       = module.ec2.id
+variable "aws_region" {
+  type = string
+  default = "eu-west-2"
 }
 
-output "ec2_arn" {
-  description = "The ARN of the instance"
-  value       = module.ec2.arn
+variable "instance_type" {
+  type = string
+  default = "t2.micro"
 }
 
-output "ec2_capacity_reservation_specification" {
-  description = "Capacity reservation specification of the instance"
-  value       = module.ec2.capacity_reservation_specification
+variable "instance_count" {
+  type = number
+  default = 2
 }
 
-output "ec2_instance_state" {
-  description = "The state of the instance. One of: `pending`, `running`, `shutting-down`, `terminated`, `stopping`, `stopped`"
-  value       = module.ec2.instance_state
-}
 
-output "ec2_primary_network_interface_id" {
-  description = "The ID of the instance's primary network interface"
-  value       = module.ec2.primary_network_interface_id
-}
-
-output "ec2_private_dns" {
-  description = "The private DNS name assigned to the instance. Can only be used inside the Amazon EC2, and only available if you've enabled DNS hostnames for your VPC"
-  value       = module.ec2.private_dns
-}
-
-output "ec2_public_dns" {
-  description = "The public DNS name assigned to the instance. For EC2-VPC, this is only available if you've enabled DNS hostnames for your VPC"
-  value       = module.ec2.public_dns
-}
-
-output "ec2_public_ip" {
-  description = "The public IP address assigned to the instance, if applicable. NOTE: If you are using an aws_eip with your instance, you should refer to the EIP's address directly and not use `public_ip` as this field will change after the EIP is attached"
-  value       = module.ec2.public_ip
-}
-
-output "ec2_tags_all" {
-  description = "A map of tags assigned to the resource, including those inherited from the provider default_tags configuration block"
-  value       = module.ec2.tags_all
-}
 
 ```
 
@@ -226,7 +116,7 @@ output "ec2_tags_all" {
 <br>
 
 ## Create a `versions` file
-- create a file named `verstions.tf`
+- create a file named `versions.tf`
 
 ```
 
@@ -246,4 +136,20 @@ terraform {
 <br>
 
 <br>
+
+## Terraform Init, Plan And Apply
+```
+
+terraform init
+terraform plan -var 'instance_count=3'
+terraform apply -var 'instance_count=3'
+
+
+```
+
+<br>
+
+<br>
+
+The `plan` command will show you the changes that will be made, and the `apply` command will create the instances. You can adjust the `instance_count` variable to launch more or fewer instances as needed.
 
