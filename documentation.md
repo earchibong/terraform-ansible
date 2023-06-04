@@ -87,6 +87,14 @@ resource "aws_instance" "ec2_instances" {
 
 <br>
 
+<img width="909" alt="main" src="https://github.com/earchibong/terraform-ansible/assets/92983658/7c6f0348-3584-44bf-85e9-957169b05994">
+
+
+<br>
+
+<br>
+
+
 ## Create A `variables` file
 - create a file named `variables.tf` and add the following:
 
@@ -114,6 +122,13 @@ variable "instance_count" {
 <br>
 
 <br>
+
+<img width="914" alt="variables" src="https://github.com/earchibong/terraform-ansible/assets/92983658/1b1c50c0-6118-4d36-a29c-598e3df66390">
+
+<br>
+
+<br>
+
 
 ## Create a `versions` file
 - create a file named `versions.tf`
@@ -153,3 +168,8 @@ terraform apply -var 'instance_count=3'
 
 The `plan` command will show you the changes that will be made, and the `apply` command will create the instances. You can adjust the `instance_count` variable to launch more or fewer instances as needed.
 
+<br>
+
+<br>
+
+## install Ansible in host server
