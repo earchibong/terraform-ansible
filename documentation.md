@@ -11,6 +11,9 @@ This is a basic project to get familiar with terraform and ansible.
 - <a href=" ">Terraform Init, Plan & Apply</a>
 - <a href=" ">Install And Configure Ansible On Host Server</a>
 - <a href=" ">Set Up Ansible Inventory</a>
+- <a href="https://github.com/earchibong/terraform-ansible/blob/main/documentation.md#create-a-playbook">Create a Playbook</a>
+- <a href=" ">Run The Play</a>
+- <a href=" ">Confirm Deplyment</a>
 
 
 ## Install And Configure Terraform On Local System
