@@ -2,7 +2,7 @@
 This is a basic project to get familiar with terraform and ansible.
 
 ## Project Steps:
-- <a href=" ">Install And Configure Terraform On Local System</a>
+- <a href="https://github.com/earchibong/terraform-ansible/blob/main/documentation.md#install-and-configure-terraform-on-local-system ">Install And Configure Terraform On Local System</a>
 - <a href="https://github.com/earchibong/terraform-ansible/blob/main/documentation.md#install-ide-for-terraform--vs-code-editor ">Install IDE for Terraform — VS Code Editor</a>
 - <a href="https://github.com/earchibong/terraform-ansible/blob/main/documentation.md#use-your-iam-credentials-to-authenticate-the-terraform-aws-provider">Use IAM credentials To Authenticate Terraform AWS Provider</a>
 - <a href=" ">Create A Terraform Configuration File</a>
@@ -10,6 +10,7 @@ This is a basic project to get familiar with terraform and ansible.
 - <a href=" ">Create A Versions File</a>
 - <a href=" ">Terraform Init, Plan & Apply</a>
 - <a href=" ">Install And Configure Ansible On Host Server</a>
+- <a href=" ">Set Up Ansible Inventory</a>
 
 
 ## Install And Configure Terraform On Local System
