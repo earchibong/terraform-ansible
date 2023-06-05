@@ -374,7 +374,7 @@ ssh -A -i "private ec2 key" ec2-user@public_ip
 ## Create a playbook
 In `playbook.yml` playbook configuration for repeatable, re-usable, and multi-machine tasks that is common to systems within the infrastructure will be written.
 
-- As we want to deploy a web page, first, create an `index.html` file in the `directory` and add the following:
+- As we want to deploy a web page, first, create an `index.html` file in the `playbooks directory` and add the following:
 
 ```
 
