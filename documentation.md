@@ -291,17 +291,6 @@ sudo amazon-linux-extras install ansible2
 
 <br>
 
-- copy private key `tf-deploy.pem` from local enivronment into `ansible-host` server
-
-```
-
-sudo scp -i “tf-deploy.pem” tf-deploy <<public DNS of EC2>>:/home/ubuntu/.ssh
-
-```
-
-<br>
-
-<br>
 
 - Create a directory and name it `ansible/playbooks` – it will be used to store all your playbook files: `playbooks`
 - Create a directory and name it `ansible/inventory` – it will be used to keep your hosts organised.: `inventory`
@@ -371,14 +360,132 @@ ssh -A -i "private ec2 key" ec2-user@public_ip
 
 <br>
 
-- ping all servers
+
+## Create a playbook
+In `playbook.yml` playbook configuration for repeatable, re-usable, and multi-machine tasks that is common to systems within the infrastructure will be written.
+
+- As we want to deploy a web page, first, create an `index.html` file and add the following:
 
 ```
 
-ansible all -m ping
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sample Deployment</title>
+    <style>
+        body {
+            font-family: Georgia, serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Sample Deployment!</h1>
+    <p>This is a basic HTML file for a sample deployment.</p>
+    <p>You can modify this file to build your own web application.</p>
+</body>
+</html>
+
 
 ```
 
 <br>
 
-## Create a playbook
+<br>
+
+<img width="922" alt="index" src="https://github.com/earchibong/terraform-ansible/assets/92983658/033cd246-b799-49dc-9266-0866596aab75">
+
+
+<br>
+
+<br>
+
+- create playbook in `playbook.yml`
+
+```
+
+---
+- name: Deploy index.html on Nginx
+  hosts: webservers
+  remote_user: ec2-user
+  become: yes
+  become_user: root
+  tasks:
+    - name: Install Nginx
+      yum:
+        name: nginx
+        state: latest
+
+    - name: Copy index.html file
+      copy:
+        src: ./index.html
+        dest: /var/www/html/index.html
+
+    - name: Configure Nginx
+      template:
+        src: templates/nginx.conf.j2
+        dest: /etc/nginx/sites-available/default
+      notify:
+        - Restart Nginx
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+
+```
+
+<br>
+
+<br>
+
+<img width="967" alt="playbook1" src="https://github.com/earchibong/terraform-ansible/assets/92983658/a18e706e-bf64-4459-9e5b-c8532799b1ae">
+
+<br>
+
+<br>
+
+- Create a `templates` directory in the same location as the playbook file and create a file named nginx.conf.j2 inside it. Add the following content to the `nginx.conf.j2` file:
+
+```
+
+server {
+    listen 80;
+    server_name your_domain.com;
+
+    root /var/www/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+
+```
+
+<br>
+
+<br>
+
+<img width="712" alt="templates" src="https://github.com/earchibong/terraform-ansible/assets/92983658/d7b37dea-0028-4ce5-91f2-ba5541616d14">
+
+<br>
+
+<br>
+
+## Run Playbook
+```
+
+ansible-playbook -i inventory/dev.yml playbooks/playbook.yml
+
+```
