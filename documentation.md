@@ -1,6 +1,16 @@
 ## Provision EC2 Instances With Terraform And Deploy Web Page with Ansible
 This is a basic project to get familiar with terraform and ansible.
 
+<br>
+
+<br>
+
+![image](https://github.com/earchibong/terraform-ansible/assets/92983658/4c8d43ee-dacb-48e1-b5ed-b18da69f30ed)
+
+<br>
+
+<br>
+
 ## Project Steps:
 - <a href="https://github.com/earchibong/terraform-ansible/blob/main/documentation.md#install-and-configure-terraform-on-local-system ">Install And Configure Terraform On Local System</a>
 - <a href="https://github.com/earchibong/terraform-ansible/blob/main/documentation.md#install-ide-for-terraform--vs-code-editor ">Install IDE for Terraform — VS Code Editor</a>
