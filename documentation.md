@@ -323,6 +323,7 @@ sudo scp -i “tf-deploy.pem” tf-deploy <<public DNS of EC2>>:/home/ubuntu/.ss
 - Set up an SSH agent and connect to `ansible-host` server:
 
 <br>
+
 ```
 
 # on your local machine:
