@@ -365,7 +365,7 @@ ssh -A -i "private ec2 key" ec2-user@public_ip
 ## Create a playbook
 In `playbook.yml` playbook configuration for repeatable, re-usable, and multi-machine tasks that is common to systems within the infrastructure will be written.
 
-- As we want to deploy a web page, first, create an `index.html` file and add the following:
+- As we want to deploy a web page, first, create an `index.html` file in the `directory` and add the following:
 
 ```
 
@@ -421,27 +421,21 @@ In `playbook.yml` playbook configuration for repeatable, re-usable, and multi-ma
   become_user: root
   tasks:
     - name: Install Nginx
-      yum:
-        name: nginx
-        state: latest
+      shell: amazon-linux-extras install nginx1.12 -y
+      args:
+        warn: no
 
     - name: Copy index.html file
       copy:
-        src: ./index.html
-        dest: /var/www/html/index.html
+        src: index.html
+        dest: /usr/share/nginx/html/index.html
 
-    - name: Configure Nginx
-      template:
-        src: templates/nginx.conf.j2
-        dest: /etc/nginx/sites-available/default
-      notify:
-        - Restart Nginx
-
-  handlers:
-    - name: Restart Nginx
+    - name: Start Nginx service
       service:
         name: nginx
-        state: restarted
+        state: started
+
+  
 
 ```
 
@@ -449,36 +443,8 @@ In `playbook.yml` playbook configuration for repeatable, re-usable, and multi-ma
 
 <br>
 
-<img width="967" alt="playbook1" src="https://github.com/earchibong/terraform-ansible/assets/92983658/a18e706e-bf64-4459-9e5b-c8532799b1ae">
+<img width="794" alt="playbook2" src="https://github.com/earchibong/terraform-ansible/assets/92983658/b38c0e7a-f256-42b4-b851-bb382a267b48">
 
-<br>
-
-<br>
-
-- Create a `templates` directory in the same location as the playbook file and create a file named nginx.conf.j2 inside it. Add the following content to the `nginx.conf.j2` file:
-
-```
-
-server {
-    listen 80;
-    server_name your_domain.com;
-
-    root /var/www/html;
-    index index.html;
-
-    location / {
-        try_files $uri $uri/ =404;
-    }
-}
-
-
-```
-
-<br>
-
-<br>
-
-<img width="712" alt="templates" src="https://github.com/earchibong/terraform-ansible/assets/92983658/d7b37dea-0028-4ce5-91f2-ba5541616d14">
 
 <br>
 
