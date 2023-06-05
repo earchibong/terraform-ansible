@@ -330,12 +330,13 @@ sudo scp -i “tf-deploy.pem” tf-deploy <<public DNS of EC2>>:/home/ubuntu/.ss
 eval `ssh-agent -s`
 ssh-add ./<path-to-private-key>
 
-Confirm the key has been added:
+# Confirm the key has been added:
 ssh-add -l
 
 
 # ssh into Jenkins-Ansible server using ssh-agent: 
 ssh -A -i "private ec2 key" ec2-user@public_ip
+
 
 ```
 
