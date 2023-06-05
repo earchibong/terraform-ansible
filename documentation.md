@@ -12,7 +12,7 @@ This is a basic project to get familiar with terraform and ansible.
 - <a href=" ">Install And Configure Ansible On Host Server</a>
 - <a href=" ">Set Up Ansible Inventory</a>
 - <a href="https://github.com/earchibong/terraform-ansible/blob/main/documentation.md#create-a-playbook">Create a Playbook</a>
-- <a href=" ">Run The Play</a>
+- <a href=" ">Run Playbook</a>
 - <a href=" ">Confirm Deplyment</a>
 
 
@@ -465,3 +465,33 @@ In `playbook.yml` playbook configuration for repeatable, re-usable, and multi-ma
 ansible-playbook -i inventory/dev.yml playbooks/playbook.yml
 
 ```
+
+<br>
+
+<br>
+
+<img width="938" alt="ansible_play" src="https://github.com/earchibong/terraform-ansible/assets/92983658/a5ef4a60-bd53-4eb5-8123-f7df332b5fd6">
+
+
+<br>
+
+<br>
+
+## Confirm Deployment
+- enter public ip of `ansible 1` and `ansible 2` and confirm if web page has been deployed
+
+<br>
+
+<img width="1391" alt="ansible_1" src="https://github.com/earchibong/terraform-ansible/assets/92983658/a23c2ce7-6392-4e58-8f0a-9e6e012f72b6">
+
+<br>
+
+<br>
+
+<img width="1390" alt="ansible_2" src="https://github.com/earchibong/terraform-ansible/assets/92983658/8c474354-7493-48d9-a04b-f2b4c885e9e0">
+
+<br>
+
+<br>
+
+
